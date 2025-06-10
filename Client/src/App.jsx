@@ -6,11 +6,13 @@ import Projects from './pages/Projects'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import About from './pages/about'
+import Header from './components/Header'
 
 
 function App() {
   return (
      <BrowserRouter>
+     <Header/>
       <Routes>
         <Route path='/' element={<Home/>}></Route>
         <Route path='/about' element={<About/>}></Route>
