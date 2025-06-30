@@ -23,7 +23,7 @@ const Header = () => {
 
       <Navbar className='border-b-2 dark:text-white flex justify-between '>
         <Link to='/' className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
-          <span className='bg-gradient-to-br from-blue-800 to-black-900 border rounded px-1 py-1'>Thought's</span>Dairy
+          <span className='bg-gradient-to-br from-blue-800 to-black-900 border rounded px-1 py-1'>Thought's</span>Diary
         </Link>
         
         <form className='flex '>   
