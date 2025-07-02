@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import Oauth from "../components/Oauth";
 
 const SignUp = () => {
   const [showPassword1, setShowPassword1] = useState(false);
@@ -185,6 +186,7 @@ const SignUp = () => {
               {loading ? "Signing Up..." : "Sign Up"}
             </button>
           </div>
+          <Oauth/>
         </form>
 
         <div className="mt-4 text-center">

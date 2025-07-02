@@ -1,4 +1,4 @@
-import e from "express";
+import e, { request } from "express";
 import bcryptjs from "bcryptjs"
 import bcrypt from "bcryptjs";
 import User from "../model/user.model.js";
@@ -124,6 +124,62 @@ export const signIn = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Internal Server Error",
+            errorMessage: err.message,
+        });
+    }
+};
+
+export const googleAuth = async (req, res) => {
+    try {
+        const { name = 'User', email, photo } = req.body;
+
+        if (!email) {
+            return res.status(407).json({
+                success: false,
+                message: "Email not received",
+            });
+        }
+
+        const existUser = await User.findOne({ email });
+
+        if (existUser) {
+            const token = jwt.sign({ id: existUser._id }, process.env.JWT_SECRET);
+            const { password, ...withoutPass } = existUser._doc;
+
+            return res
+                .cookie('AccessToken', token, { httpOnly: true })
+                .json({
+                    success: true,
+                    message: "SignIn successfully with Google auth.",
+                    user: withoutPass, // Send user data without sensitive fields
+                });
+        } else {
+            const newPass = name + '@gmail.com';
+            const hashedPassword = await bcryptjs.hash(newPass, 10);
+
+            const newUser = await User.create({
+                name:name,
+                email: email.toLowerCase(),
+                userId: name + Math.random().toString(10),
+                password: hashedPassword,
+                photoURL: `https://api.dicebear.com/9.x/${name}/svg`,
+            });
+
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+            return res
+                .status(200)
+                .cookie('AccessToken', token, { httpOnly: true })
+                .json({
+                    success: true,
+                    message: "New Account created using Google auth!!",
+                    user: newUser, // Send newly created user data
+                });
+        }
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error while authenticating with Google",
             errorMessage: err.message,
         });
     }

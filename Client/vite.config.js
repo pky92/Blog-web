@@ -10,7 +10,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      external: ['tailwindcss/version.js'], // Exclude from Rollup build
+      external: ['tailwindcss/version.js','express'], // Exclude from Rollup build
     },
   },
     server: {
